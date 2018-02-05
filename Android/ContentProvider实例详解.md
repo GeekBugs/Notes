@@ -118,19 +118,19 @@ matcher.addURI("cn.scu.myprovider", "user/#",USER_ID);
 
 ```java
 /* 
-     * 如果操作集合，则必须以vnd.android.cursor.dir开头 
-     * 如果操作非集合，则必须以vnd.android.cursor.item开头 
-     * */  
-    @Override  
-    public String getType(Uri uri) {  
-    Uri uri = Uri.parse("content://" + "cn.scu.myprovider" + "/user");  
-        switch(matcher.match(uri)){  
-        case USER:  
-            return "vnd.android.cursor.dir/user";  
-        case USER_ID:  
-            return "vnd.android.cursor.item/user";  
-        }  
-    } 
+ * 如果操作集合，则必须以vnd.android.cursor.dir开头 
+ * 如果操作非集合，则必须以vnd.android.cursor.item开头 
+ * */  
+@Override  
+public String getType(Uri uri) {  
+Uri uri = Uri.parse("content://" + "cn.scu.myprovider" + "/user");  
+    switch(matcher.match(uri)){  
+    case USER:  
+        return "vnd.android.cursor.dir/user";  
+    case USER_ID:  
+        return "vnd.android.cursor.item/user";  
+    }  
+} 
 ```
 
 # 3.ContentProvider的主要方法
