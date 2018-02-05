@@ -1,9 +1,9 @@
-#什么是服务？　　
+# 什么是服务？　　
 
 　　Service是一个应用程序组件，它能够在后台执行一些耗时较长的操作，并且不提供用户界面。服务能被其它应用程序的组件启动，即使用户切换到另外的应用时还能保持后台运行。此外，应用程序组件还能与服务绑定，并与服务进行交互，甚至能进行进程间通信（IPC）。 比如，服务可以处理网络传输、音乐播放、执行文件I/O、或者与content provider进行交互，所有这些都是后台进行的。
 
 
-#Service 与 Thread 的区别
+# Service 与 Thread 的区别
 
 
 　　服务仅仅是一个组件，即使用户不再与你的应用程序发生交互，它仍然能在后台运行。因此，应该只在需要时才创建一个服务。
@@ -12,7 +12,7 @@
 
 　　**由于无法在不同的 Activity 中对同一 Thread 进行控制**，这个时候就要考虑用服务实现。如果你使用了服务，它默认就运行于应用程序的主线程中。因此，如果服务执行密集计算或者阻塞操作，你仍然应该在服务中创建一个新的线程来完成（避免ANR）。
 
-#服务的分类
+# 服务的分类
 
 ##按运行分类
 
@@ -27,7 +27,7 @@
 
  　
 
-```
+```java
 Notification notification = new Notification(R.drawable.icon, getText(R.string.ticker_text),System.currentTimeMillis());
 
 Intent notificationIntent = new Intent(this,ExampleActivity.class);
@@ -44,7 +44,7 @@ startForeground(ONGOING_NOTIFICATION, notification);
 
  - 后台服务
 
-##按使用分类　　
+## 按使用分类　　
 
  - 本地服务
 
@@ -55,12 +55,12 @@ startForeground(ONGOING_NOTIFICATION, notification);
 
 　　用于Android系统内部的应用程序之间，可被其他应用程序复用，比如天气预报服务，其他应用程序不需要再写这样的服务，调用已有的即可。可以定义接口并把接口暴露出来，以便其他应用进行操作。客户端建立到服务对象的连接，并通过那个连接来调用服务。调用Context.bindService()方法建立连接，并启动，以调用 Context.unbindService()关闭连接。多个客户端可以绑定至同一个服务。如果服务此时还没有加载，bindService()会先加载它。
 
-#Service生命周期
+# Service生命周期
 
 　　![这里写图片描述](http://img.blog.csdn.net/20160503165018575)
 
 Service生命周期方法：
-```
+```java
 public class ExampleService extends Service {
     int mStartMode;       // 标识服务被杀死后的处理方式
     IBinder mBinder;      // 用于客户端绑定的接口
@@ -100,13 +100,13 @@ public class ExampleService extends Service {
 > 请注意onStartCommand()方法必须返回一个整数。这个整数是描述系统在杀死服务之后应该如何继续运行。onStartCommand()的返回值必须是以下常量之一：
 
 >START_NOT_STICKY 　
-如果系统在onStartCommand()返回后杀死了服务，则不会重建服务了，除非还存在未发送的intent。 当服务不再是必需的，并且应用程序能够简单地重启那些未完成的工作时，这是避免服务运行的最安全的选项。　
-　
+>如果系统在onStartCommand()返回后杀死了服务，则不会重建服务了，除非还存在未发送的intent。 当服务不再是必需的，并且应用程序能够简单地重启那些未完成的工作时，这是避免服务运行的最安全的选项。　
+
 >START_STICKY 
-如果系统在onStartCommand()返回后杀死了服务，则将重建服务并调用onStartCommand()，但不会再次送入上一个intent， 而是用null intent来调用onStartCommand() 。除非还有启动服务的intent未发送完，那么这些剩下的intent会继续发送。 这适用于媒体播放器（或类似服务），它们不执行命令，但需要一直运行并随时待命。　
+>如果系统在onStartCommand()返回后杀死了服务，则将重建服务并调用onStartCommand()，但不会再次送入上一个intent， 而是用null intent来调用onStartCommand() 。除非还有启动服务的intent未发送完，那么这些剩下的intent会继续发送。 这适用于媒体播放器（或类似服务），它们不执行命令，但需要一直运行并随时待命。　
 
 >START_REDELIVER_INTENT 
-如果系统在onStartCommand()返回后杀死了服务，则将重建服务并用上一个已送过的intent调用onStartCommand()。任何未发送完的intent也都会依次送入。这适用于那些需要立即恢复工作的活跃服务，比如下载文件。
+>如果系统在onStartCommand()返回后杀死了服务，则将重建服务并用上一个已送过的intent调用onStartCommand()。任何未发送完的intent也都会依次送入。这适用于那些需要立即恢复工作的活跃服务，比如下载文件。
 
 　　服务的生命周期与activity的非常类似。不过，更重要的是你需密切关注服务的创建和销毁环节，因为后台运行的服务是不会引起用户注意的。
 
@@ -121,7 +121,7 @@ public class ExampleService extends Service {
 　　
 
  - 　一个bound服务
- 
+
 　　服务由其它组件（客户端）调用bindService()来创建。然后客户端通过一个IBinder接口与服务进行通信。客户端可以通过调用unbindService()来关闭联接。多个客户端可以绑定到同一个服务上，当所有的客户端都解除绑定后，系统会销毁服务。（服务不需要自行终止。）
 
 　　如果一个Service被某个Activity 调用 Context.bindService 方法绑定启动，不管调用 bindService 调用几次，onCreate方法都只会调用一次，同时onStart方法始终不会被调用。当连接建立之后，Service将会一直运行，除非调用Context.unbindService 断开连接或者之前调用bindService 的 Context 不存在了（如Activity被finish的时候），系统将会自动停止Service，对应onDestroy将被调用。
@@ -132,11 +132,11 @@ public class ExampleService extends Service {
 
 > 　　当在旋转手机屏幕的时候，当手机屏幕在“横”“竖”变换时，此时如果你的 Activity 如果会自动旋转的话，旋转其实是 Activity 的重新创建，因此旋转之前的使用 bindService 建立的连接便会断开（Context 不存在了）。
 
-#在manifest中声明服务
+# 在manifest中声明服务
 
 　　无论是什么类型的服务都必须在manifest中申明，格式如下：
 
-```
+```xml
 <manifest ... >
   ...
   <application ... >
@@ -165,18 +165,18 @@ Service 元素的属性有：
 　　android:name是唯一必需的属性——它定义了服务的类名。与activity一样，服务可以定义intent过滤器，使得其它组件能用隐式intent来调用服务。如果你想让服务只能内部使用（其它应用程序无法调用），那么就不必（也不应该）提供任何intent过滤器。
 　　此外，如果包含了android:exported属性并且设置为"false"， 就可以确保该服务是你应用程序的私有服务。即使服务提供了intent过滤器，本属性依然生效。　
 
-#startService 启动服务
+# startService 启动服务
 
 　　从activity或其它应用程序组件中可以启动一个服务，调用startService()并传入一个Intent（指定所需启动的服务）即可。
 
-```
+```java
 	Intent intent = new Intent(this, MyService.class);
 	startService(intent);
 ```
 
 服务类：
 
-```
+```java
 public class MyService extends Service {
 
 	  /**
@@ -210,13 +210,13 @@ public class MyService extends Service {
 
 　　一个started服务必须自行管理生命周期。也就是说，系统不会终止或销毁这类服务，除非必须恢复系统内存并且服务返回后一直维持运行。 因此，服务必须通过调用stopSelf()自行终止，或者其它组件可通过调用stopService()来终止它。
 
-#bindService 启动服务　　
+# bindService 启动服务　　
 
 　　当应用程序中的activity或其它组件需要与服务进行交互，或者应用程序的某些功能需要暴露给其它应用程序时，你应该创建一个bound服务，并通过进程间通信（IPC）来完成。
 
 方法如下：
 
-```
+```java
  Intent intent=new Intent(this,BindService.class); 
  bindService(intent, ServiceConnection conn, int flags)  
 
@@ -227,20 +227,20 @@ public class MyService extends Service {
 在进行服务绑定的时，其flags有：
 
  - Context.BIND_AUTO_CREATE    
- 
+
 　　表示收到绑定请求的时候，如果服务尚未创建，则即刻创建，在系统内存不足需要先摧毁优先级组件来释放内存，且只有驻留该服务的进程成为被摧毁对象时，服务才被摧毁　
 
  - Context.BIND_DEBUG_UNBIND    　
- 
+
 　　通常用于调试场景中判断绑定的服务是否正确，但容易引起内存泄漏，因此非调试目的的时候不建议使用
 
  - Context.BIND_NOT_FOREGROUND    　
- 
+
 　　表示系统将阻止驻留该服务的进程具有前台优先级，仅在后台运行。
 
 服务类：
 
-```
+```java
 public class BindService extends Service {
 
 	 // 实例化MyBinder得到mybinder对象；
@@ -277,7 +277,7 @@ public class BindService extends Service {
 
 启动服务的activity代码：
 
-```
+```java
 public class MainActivity extends Activity {
 
 	/** 是否绑定 */  
@@ -337,7 +337,7 @@ public class MainActivity extends Activity {
 
 判断Service是否正在运行：
 
-```
+```java
 private boolean isServiceRunning() {
     ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
     
