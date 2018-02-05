@@ -62,7 +62,6 @@ String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED" ;
 ## 动态方式
 
 　　在Activity中声明BroadcastReceiver的扩展对象，在onResume中注册，onPause中卸载.
-　　　
 ```java
 public class MainActivity extends Activity {
 	MyBroadcastReceiver receiver;
@@ -84,14 +83,14 @@ public class MainActivity extends Activity {
 }
 ```
 
+
 ## 静态注册和动态注册的区别
 
-      　　1. 静态注册的广播接收者一经安装就常驻在系统之中，不需要重新启动唤醒接收者；
+1. 静态注册的广播接收者一经安装就常驻在系统之中，不需要重新启动唤醒接收者；
       动态注册的广播接收者随着应用的生命周期，由registerReceiver开始监听，由unregisterReceiver撤销监听，如果应用退出后，没有撤销已经注册的接收者应用应用将会报错。
-    
-      　　2. 当广播接收者通过intent启动一个activity或者service时，如果intent中无法匹配到相应的组件。　
-      动态注册的广播接收者将会导致应用报错
-      　　而静态注册的广播接收者将不会有任何报错，因为自从应用安装完成后，广播接收者跟应用已经脱离了关系。　
+
+2. 当广播接收者通过intent启动一个activity或者service时，如果intent中无法匹配到相应的组件。　
+      动态注册的广播接收者将会导致应用报错,而静态注册的广播接收者将不会有任何报错，因为自从应用安装完成后，广播接收者跟应用已经脱离了关系。　
 
 # 发送BroadcastReceiver
 
@@ -115,8 +114,6 @@ sendBroadcast(Intent);
 　　同级别接收是先后是随机的；级别低的收到广播；
 　　消息传递的效率比较高，并且无法中断广播的传播。
 
-
-　　
 ##有序广播
 
 应用在需要有特定拦截的场景下使用，如黑名单短信、电话拦截。　
@@ -192,7 +189,7 @@ removeStickyBroadcast(intent);
 
  - 广播发出的时候，广播接收者接收的顺序如下：
 
-         1. 当广播为**普通广播**时，有如下的接收顺序：
+            1. 当广播为**普通广播**时，有如下的接收顺序：
 
 　　无视优先级
 　　动态优先于静态

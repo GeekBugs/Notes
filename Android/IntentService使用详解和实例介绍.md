@@ -38,7 +38,6 @@
 public class myIntentService extends IntentService {
 
 	//------------------必须实现-----------------------------
-	
 	public myIntentService() {
 		super("myIntentService");
 		// 注意构造函数参数为空，这个字符串就是worker thread的名字
@@ -59,12 +58,13 @@ public class myIntentService extends IntentService {
 			break;
 		}		
 	}
+
   //--------------------用于打印生命周期--------------------	
-   @Override
-  public void onCreate() {
+    @Override
+    public void onCreate() {
 		Log.i("myIntentService", "onCreate");
 	super.onCreate();
-}
+	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
